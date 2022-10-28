@@ -14,27 +14,37 @@ jobs:
     variables:
       BuildConfiguration: Release
     steps:
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          version: '6.0'
+          vsVersion: '2019'
       - task: DotNetCoreCLI@2
+        displayName: Restore
         inputs:
           command: 'restore'
           projects: '**/*.csproj'
           feedsToUse: 'select'
       - task: DotNetCoreCLI@2
+        displayName: Build
         inputs:
           command: 'build'
           projects: '**/*.csproj'
           arguments: '--configuration $(BuildConfiguration)'
       - task: DotNetCoreCLI@2
+        displayName: Test
         inputs:
           command: 'test'
           projects: '**/*UnitTest*.csproj'
           arguments: '--configuration $(BuildConfiguration)'
       - task: DotNetCoreCLI@2
+        displayName: Publish
         inputs:
           command: 'publish'
           publishWebProjects: true
           arguments: '--configuration $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
       - task: PublishBuildArtifacts@1
+        displayName: CopyArtifact-Drop
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: 'drop'
