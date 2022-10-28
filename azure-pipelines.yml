@@ -17,8 +17,8 @@ jobs:
       - task: UseDotNet@2
         inputs:
           packageType: 'sdk'
-          version: '6.0'
-          vsVersion: '2019'
+          version: '6.0.x'
+          includePreviewVersions: true
       - task: DotNetCoreCLI@2
         displayName: Restore
         inputs:
